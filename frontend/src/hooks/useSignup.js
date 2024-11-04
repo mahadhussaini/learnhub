@@ -11,27 +11,11 @@ export const useSignup = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await (async () => {
-      try {
-        // First attempt with the localhost URL
-        return await fetch("http://localhost:4000/api/user/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password }),
-        });
-      } catch (error) {
-        console.error("Localhost request failed, trying fallback URL:", error);
-        // If the first fetch fails, attempt the fallback URL
-        return await fetch(
-          "https://learnhub-qf74.onrender.com/api/user/signup",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password }),
-          }
-        );
-      }
-    })();
+    const response = await fetch("http://localhost:4000/api/user/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
 
     const json = await response.json();
 
