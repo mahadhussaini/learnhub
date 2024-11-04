@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const chaptersRoutes = require("./routes/chapters");
@@ -9,30 +9,38 @@ const path = require("path");
 const routes = require("./routes/ToDoRoute");
 const { socketController } = require("./contollers/chatController");
 
-//express app created
 const app = express();
 const server = require("http").createServer(app);
 
-// socket.io and then i added cors for cross origin to localhost only
 const io = require("socket.io")(server, {
   cors: {
-    origin: "*", //specific origin you want to give access to,
+    origin: "*",
   },
 });
 
 socketController(io);
 
-const cors = require("cors");
-const corsOptions = {
-  origin: "*",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: "*",
+//   credentials: true,
+//   optionSuccessStatus: 200,
+// };
 
-app.use(cors(corsOptions)); // Use this after the variable declaration
+const allowedOrigin =
+  process.env.NODE_ENV === "production"
+    ? "https://eventwave-client.onrender.com"
+    : "http://localhost:3006";
 
-//middle vware
-app.use(express.json()); //post coming request data checks
+app.use(
+  cors({
+    credentials: true,
+    origin: allowedOrigin,
+  })
+);
+
+// app.use(cors(corsOptions));
+
+app.use(express.json());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
@@ -45,14 +53,12 @@ app.use("/api/user", userRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(routes);
 
-//connect to db
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    //listen for requests
     server.listen(process.env.PORT, () => {
       console.log("listening to port 4000");
     });

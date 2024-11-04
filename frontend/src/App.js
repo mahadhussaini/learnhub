@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import axios from "axios";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import Dashboard from "./pages/Dashboard";
@@ -13,6 +14,10 @@ import OpenCourse from "./pages/OpenCourse";
 import StudentsList from "./pages/StudentsList";
 import Login from "./pages/Auth/login";
 import Signup from "./pages/Auth/signup";
+
+axios.defaults.baseURL = axios.defaults.baseURL =
+  process.env.REACT_API_URL || "http://localhost:4000";
+axios.defaults.withCredentials = true;
 
 function App() {
   const { user } = useAuthContext();
