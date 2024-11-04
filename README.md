@@ -24,3 +24,7 @@ By default, all new users are assigned the role of **Student**. If you wish to a
 ### Experience the Future of Education
 
 Join us in exploring the future of education with our comprehensive LMS. Whether you're a student eager to learn or an administrator managing courses, our platform is designed to facilitate a seamless and engaging educational experience.
+
+### Contribute and Explore
+
+Check out my GitHub for the source code and additional projects related to this Learning Management System: [GitHub Profile](https://github.com/mahadhussaini)
