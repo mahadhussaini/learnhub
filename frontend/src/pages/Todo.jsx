@@ -19,6 +19,8 @@ function Todo() {
 
   useEffect(() => {
     const fetchTodos = async () => {
+      if (!user) return; // Prevent fetching todos if user is not logged in
+
       setLoading(true);
       try {
         const response = await axios.get("http://localhost:4000/", {
@@ -33,7 +35,7 @@ function Todo() {
     };
 
     fetchTodos();
-  }, [user._id]);
+  }, [user]);
 
   const handleNewTodoChange = (event) => {
     setNewTodo(event.target.value);
@@ -42,7 +44,7 @@ function Todo() {
   const handleNewTodoSubmit = async (event) => {
     event.preventDefault();
 
-    if (!newTodo) return; // Prevent adding empty todos
+    if (!newTodo || !user) return; // Prevent adding empty todos or if user is not logged in
 
     try {
       const response = await axios.post("http://localhost:4000/", {

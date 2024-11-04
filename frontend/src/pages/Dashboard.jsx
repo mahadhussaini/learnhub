@@ -235,7 +235,9 @@ const Dashboard = () => {
       <div className="flex flex-col mx-4 lg:mx-10 bg-gradient-to-b from-blue-500 to-indigo-700 min-h-screen text-white">
         <div className="mb-6 text-center">
           <h1 className="mt-10 text-3xl font-bold">
-            Hello {user.name}, Welcome back
+            {user
+              ? `Hello ${user.name}, Welcome back`
+              : "Welcome to the Dashboard"}
           </h1>
           <div className="flex items-center justify-center mt-2">
             <h2 className="text-2xl font-black">Your Dashboard Today</h2>

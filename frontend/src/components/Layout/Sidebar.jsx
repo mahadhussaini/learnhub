@@ -46,7 +46,10 @@ const Sidebar = ({ check, setCheck, forwardRef }) => {
         >
           <img src={Person} className="m-auto" alt="Profile" />
         </Link>
-        <span className="ml-4 text-lg font-semibold">{user.name}</span>
+        {/* Check if user exists before accessing user.name */}
+        <span className="ml-4 text-lg font-semibold">
+          {user ? user.name : "Guest"}
+        </span>
       </div>
 
       <div className="mt-10">
@@ -142,12 +145,15 @@ const Sidebar = ({ check, setCheck, forwardRef }) => {
       </div>
 
       <div className="mt-auto p-4">
-        <button
-          onClick={handleClick}
-          className="flex items-center px-6 py-2 text-red-600 hover:bg-red-200 rounded-xl w-full"
-        >
-          <LogoutIcon className="mr-2" /> Logout
-        </button>
+        {/* Render Logout button only if user exists */}
+        {user && (
+          <button
+            onClick={handleClick}
+            className="flex items-center px-6 py-2 text-red-600 hover:bg-red-200 rounded-xl w-full"
+          >
+            <LogoutIcon className="mr-2" /> Logout
+          </button>
+        )}
       </div>
     </nav>
   );

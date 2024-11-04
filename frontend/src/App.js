@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import Profile from "./pages/Profile";
@@ -21,59 +22,73 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const { user } = useAuthContext();
+
   useEffect(() => {
     localStorage.removeItem("user");
   }, []);
+
   return (
-    <div className="">
+    <div>
       <Routes>
-        <Route
-          path="/"
-          element={user ? <Dashboard /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/Dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/login" />}
-        />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/profile"
-          element={user ? <Profile /> : <Navigate to="/login" />}
-        />
 
+        {/* Protected Routes */}
         <Route
           path="/Courses"
-          element={user ? <Courses /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute>
+              <Courses />
+            </ProtectedRoute>
+          }
         />
         <Route
-          path="/Chat"
-          element={user ? <Chat /> : <Navigate to="/login" />}
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/Meet"
-          element={user ? <Meet /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute>
+              <Meet />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/OpenCourse"
-          element={user ? <OpenCourse /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/Todo"
-          element={user ? <Todo /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/AddNewModule"
-          element={user ? <AddNewModule /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute>
+              <OpenCourse />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/Grades"
-          element={user ? <Grades /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute>
+              <Grades />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/Student-List"
-          element={user ? <StudentsList /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute>
+              <StudentsList />
+            </ProtectedRoute>
+          }
         />
+
+        {/* Public Routes */}
+        <Route path="/Chat" element={<Chat />} />
+        <Route path="/Todo" element={<Todo />} />
+        <Route path="/AddNewModule" element={<AddNewModule />} />
       </Routes>
     </div>
   );
