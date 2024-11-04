@@ -28,7 +28,7 @@ socketController(io);
 
 const allowedOrigin =
   process.env.NODE_ENV === "production"
-    ? "https://eventwave-client.onrender.com"
+    ? "https://learnhub-ochre.vercel.app"
     : "http://localhost:3006";
 
 app.use(
