@@ -4,41 +4,45 @@ import { useAuthContext } from "./useAuthContext";
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
 
   const signup = async (name, email, password) => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch("http://localhost:4000/api/user/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const response = await fetch(
+        "https://learnhub-qf74.onrender.com/api/user/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        }
+      );
 
-    const json = await response.json();
+      const json = await response.json();
 
-    if (!response.ok) {
-      setIsLoading(false);
-      setError(json.error);
-    }
-    if (response.ok) {
-      //save the user to local storage
+      if (!response.ok) {
+        throw new Error(json.message || json.error || "Failed to sign up");
+      }
+
       localStorage.setItem("user", JSON.stringify(json));
-
-      //update authcontext
       dispatch({ type: "LOGIN", payload: json });
 
-      setIsLoading(false);
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Signin Successfully",
+        title: "Signup Successfully",
         showConfirmButton: false,
         timer: 2000,
       });
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return { signup, isLoading, error };
 };
